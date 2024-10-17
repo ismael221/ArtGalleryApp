@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,12 +19,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,13 +43,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ImageGalleryTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
                     ImageGalleryLayout(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-            }
         }
     }
 }
@@ -57,7 +63,9 @@ fun ImageGalleryLayout(modifier: Modifier = Modifier){
             .fillMaxSize()
     ) {
         ArtWall()
-        ArtDescription()
+        ArtDescription(
+            modifier = modifier.padding(10.dp)
+        )
         ArtButtonControls()
     }
 }
@@ -66,20 +74,30 @@ fun ImageGalleryLayout(modifier: Modifier = Modifier){
 fun ArtWall(
     modifier: Modifier = Modifier
 ){
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
         modifier = modifier
+            .fillMaxWidth()
             .padding(16.dp)
-    ) {
-        Image(
-            painter = painterResource(R.drawable.skeleton_photo),
-            contentDescription = "Skeleton photo",
-            modifier = modifier
-                .padding(24.dp)
-        )
+            .shadow(8.dp, shape = RoundedCornerShape(8.dp)) // Aplica a sombra
+            .background(Color.White, shape = RoundedCornerShape(8.dp)) // Define o fundo e o formato
 
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Image(
+                painter = painterResource(R.drawable.skeleton_photo),
+                contentDescription = "Skeleton photo",
+                modifier = Modifier
+                    .padding(24.dp)
+            )
+        }
     }
+
 }
 
 @Composable
@@ -90,19 +108,18 @@ fun ArtDescription(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .padding(16.dp)
+            .fillMaxWidth()
     ) {
         Text(
             text = "Head of a Skeleton with a Burning Cigarette",
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
         Text(
             text = "Vincent van Gogh (1886)",
             textAlign = TextAlign.Center,
             modifier = modifier
-                .padding(10.dp)
         )
     }
 }
