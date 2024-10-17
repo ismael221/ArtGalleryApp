@@ -4,10 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,11 +21,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,30 +56,64 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ImageGalleryLayout(modifier: Modifier = Modifier){
+
+    var result by remember { mutableStateOf(1) }
+
+    var art = when(result){
+        1 -> R.drawable.skeleton_photo
+        2 -> R.drawable.night
+        else -> R.drawable.self
+    }
+
+    var description   = when(result){
+        1 -> R.string.art_description_1
+        2 -> R.string.art_description_2
+        else -> R.string.art_description_3
+    }
+
+    var author = when(result){
+            1 -> R.string.artist_name_1
+            2 -> R.string.artist_name_2
+            else -> R.string.artist_name_3
+        }
+
+
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier= modifier
             .fillMaxSize()
     ) {
-        ArtWall()
+        ArtWall(art)
         ArtDescription(
-            modifier = modifier.padding(10.dp)
+            description,
+            author,
+            modifier = modifier.padding(10.dp),
         )
-        ArtButtonControls()
+        ArtButtonControls(
+            onPreviousClick = {
+                result = if (result > 1) result - 1 else 3 // ajusta para 3 imagens
+            },
+            onNextClick = {
+                result = if (result < 3) result + 1 else 1 // ajusta para 3 imagens
+            }
+        )
     }
 }
 
 @Composable
 fun ArtWall(
+    art: Int,
     modifier: Modifier = Modifier
 ){
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .shadow(8.dp, shape = RoundedCornerShape(8.dp)) // Aplica a sombra
-            .background(Color.White, shape = RoundedCornerShape(8.dp)) // Define o fundo e o formato
+            .shadow(8.dp, shape = RoundedCornerShape(8.dp))
+            .background(Color.White, shape = RoundedCornerShape(8.dp))
 
     ) {
         Column(
@@ -90,7 +124,7 @@ fun ArtWall(
                 .padding(16.dp)
         ) {
             Image(
-                painter = painterResource(R.drawable.skeleton_photo),
+                painter = painterResource(art),
                 contentDescription = "Skeleton photo",
                 modifier = Modifier
                     .padding(24.dp)
@@ -102,6 +136,8 @@ fun ArtWall(
 
 @Composable
 fun ArtDescription(
+    description: Int,
+    author: Int,
     modifier: Modifier = Modifier
 ){
     Column(
@@ -111,13 +147,13 @@ fun ArtDescription(
             .fillMaxWidth()
     ) {
         Text(
-            text = "Head of a Skeleton with a Burning Cigarette",
+            text = stringResource(description),
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = "Vincent van Gogh (1886)",
+            text = stringResource(author),
             textAlign = TextAlign.Center,
             modifier = modifier
         )
@@ -126,8 +162,12 @@ fun ArtDescription(
 
 @Composable
 fun ArtButtonControls(
+    onPreviousClick: () -> Unit,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
+
+
      Row(
        verticalAlignment = Alignment.CenterVertically,
        horizontalArrangement = Arrangement.Center,
@@ -135,14 +175,14 @@ fun ArtButtonControls(
            .fillMaxWidth()
      ) {
         Button(
-            onClick = {},
+            onClick =  onPreviousClick,
             modifier = Modifier.size(width = 150.dp, height = 50.dp)
         ) {
             Text(stringResource(R.string.previous_button))
         }
         Spacer(modifier = Modifier.width(16.dp))
         Button(
-            onClick = {},
+            onClick = onNextClick,
             modifier = Modifier.size(width = 150.dp, height = 50.dp)
         ) {
                 Text(stringResource(R.string.next_button))

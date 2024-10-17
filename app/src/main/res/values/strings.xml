@@ -2,4 +2,13 @@
     <string name="app_name">Image Gallery</string>
     <string name="next_button">Next</string>
     <string name="previous_button">Previous</string>
+
+    <string name="art_description_1">Head of a Skeleton with a Burning Cigarette</string>
+    <string name="artist_name_1">Vincent van Gogh (1886)</string>
+
+    <string name="art_description_2">The Starry Night</string>
+    <string name="artist_name_2">Vincent van Gogh (1889)</string>
+
+    <string name="art_description_3">Self-portrait with grey felt hat</string>
+    <string name="artist_name_3">Vincent van Gogh (1887)</string>
 </resources>
