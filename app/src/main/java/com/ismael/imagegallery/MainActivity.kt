@@ -193,7 +193,7 @@ fun ArtButtonControls(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun GalleryPreview() {
     ImageGalleryTheme {
         ImageGalleryLayout()
     }
